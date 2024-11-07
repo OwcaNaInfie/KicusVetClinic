@@ -1,6 +1,7 @@
 # KicusVetClinic
 
-czesc
+Ta?
+To zajebiście.
 
 ## 1. Data Classes
 
