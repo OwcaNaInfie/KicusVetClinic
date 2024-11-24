@@ -8,7 +8,12 @@ import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 import { routes } from './app.routes';
 import { environment } from '../environments/environment';
 
@@ -19,6 +24,13 @@ export const appConfig: ApplicationConfig = {
     provideFirebaseApp(() => initializeApp(environment)),
     provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
-    importProvidersFrom(ReactiveFormsModule), // Dodanie ReactiveFormsModule
+    importProvidersFrom(
+      ReactiveFormsModule,
+      MatButtonModule,
+      MatInputModule,
+      MatCardModule,
+      MatIconModule,
+      MatFormFieldModule
+    ),
   ],
 };

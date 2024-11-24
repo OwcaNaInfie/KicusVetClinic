@@ -1,32 +1,30 @@
-<div class="login-container">
+<mat-card class="login-card">
   <h2>Login</h2>
   <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
-    <div>
-      <label for="email">Email:</label>
-      <input id="email" formControlName="email" type="email" />
-      <div
-        *ngIf="
-          loginForm.get('email')?.invalid && loginForm.get('email')?.touched
-        "
-      >
-        Email must be valid.
-      </div>
-    </div>
+    <mat-form-field appearance="fill">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" type="email" />
+      <mat-error *ngIf="loginForm.get('email')?.hasError('required')">
+        Email is required.
+      </mat-error>
+    </mat-form-field>
 
-    <div>
-      <label for="password">Password:</label>
-      <input id="password" formControlName="password" type="password" />
-      <div
-        *ngIf="
-          loginForm.get('password')?.invalid &&
-          loginForm.get('password')?.touched
-        "
-      >
-        Password must be at least 6 characters long.
-      </div>
-    </div>
+    <mat-form-field appearance="fill">
+      <mat-label>Password</mat-label>
+      <input matInput formControlName="password" type="password" />
+      <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
+        Password is required.
+      </mat-error>
+    </mat-form-field>
 
-    <button type="submit" [disabled]="loginForm.invalid">Login</button>
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="loginForm.invalid"
+    >
+      Login
+    </button>
   </form>
   <p>Don't have an account? <a routerLink="/register">Register here</a></p>
-</div>
+</mat-card>

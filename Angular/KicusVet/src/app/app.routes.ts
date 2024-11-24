@@ -1,7 +1,12 @@
 import { Routes } from '@angular/router';
+import { AuthGuard } from './auth.guard';
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  {
+    path: '',
+    redirectTo: '/login', // Redirect to login if the user is not authenticated
+    pathMatch: 'full',
+  },
   {
     path: 'login',
     loadComponent: () =>
@@ -14,4 +19,14 @@ export const routes: Routes = [
         (m) => m.RegisterComponent
       ),
   },
+  {
+    path: 'front-page',
+    loadComponent: () =>
+      import('./front-page/front-page.component').then(
+        (m) => m.FrontPageComponent
+      ),
+    canActivate: [AuthGuard], // Protect the front page with AuthGuard
+  },
+  // This default path should be removed to avoid conflict
+  // { path: '', redirectTo: '/front-page', pathMatch: 'full' },
 ];
