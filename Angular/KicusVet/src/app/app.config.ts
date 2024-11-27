@@ -16,6 +16,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { routes } from './app.routes';
 import { environment } from '../environments/environment';
+import { provideDatabase, getDatabase } from '@angular/fire/database';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -32,5 +33,6 @@ export const appConfig: ApplicationConfig = {
       MatIconModule,
       MatFormFieldModule
     ),
+    provideDatabase(() => getDatabase()),
   ],
 };

@@ -27,6 +27,13 @@ export const routes: Routes = [
       ),
     canActivate: [AuthGuard], // Protect the front page with AuthGuard
   },
+  {
+    path: 'crud-test',
+    loadComponent: () =>
+      import('./crud-test/crud-test.component').then(
+        (m) => m.CRUDTestComponent
+      ),
+  },
   // This default path should be removed to avoid conflict
   // { path: '', redirectTo: '/front-page', pathMatch: 'full' },
 ];

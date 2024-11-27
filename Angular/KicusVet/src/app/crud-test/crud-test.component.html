@@ -1,0 +1,61 @@
+<div class="crud-test">
+  <h2>CRUD Test for Patients</h2>
+
+  <!-- Formularz dodawania pacjenta -->
+  <div class="add-patient">
+    <h3>Add New Patient</h3>
+    <form (ngSubmit)="addPatient()">
+      <div>
+        <label for="fullName">Full Name:</label>
+        <input
+          type="text"
+          id="fullName"
+          [(ngModel)]="newPatient.fullName"
+          name="fullName"
+          required
+        />
+      </div>
+      <div>
+        <label for="phoneNumber">Phone Number:</label>
+        <input
+          type="text"
+          id="phoneNumber"
+          [(ngModel)]="newPatient.phoneNumber"
+          name="phoneNumber"
+          required
+        />
+      </div>
+      <div>
+        <label for="email">Email:</label>
+        <input
+          type="email"
+          id="email"
+          [(ngModel)]="newPatient.email"
+          name="email"
+          required
+        />
+      </div>
+      <button type="submit">Add Patient</button>
+    </form>
+  </div>
+
+  <!-- Lista pacjentów -->
+  <div class="patient-list">
+    <h3>Patient List</h3>
+    <ul>
+      <li *ngFor="let patient of patients">
+        <p><strong>Name:</strong> {{ patient.fullName }}</p>
+        <p><strong>Phone:</strong> {{ patient.phoneNumber }}</p>
+        <p><strong>Email:</strong> {{ patient.email }}</p>
+
+        <!-- Akcje: Aktualizuj, Usuń -->
+        <button
+          (click)="updatePatient(patient.id, { fullName: 'Updated Name' })"
+        >
+          Update
+        </button>
+        <button (click)="deletePatient(patient.id)">Delete</button>
+      </li>
+    </ul>
+  </div>
+</div>
