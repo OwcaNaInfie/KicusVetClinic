@@ -17,6 +17,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { routes } from './app.routes';
 import { environment } from '../environments/environment';
 import { provideDatabase, getDatabase } from '@angular/fire/database';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserModule } from '@angular/platform-browser';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -31,7 +33,10 @@ export const appConfig: ApplicationConfig = {
       MatInputModule,
       MatCardModule,
       MatIconModule,
-      MatFormFieldModule
+      MatFormFieldModule,
+      MatCardModule,
+      BrowserModule,
+      BrowserAnimationsModule
     ),
     provideDatabase(() => getDatabase()),
   ],

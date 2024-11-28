@@ -34,6 +34,14 @@ export const routes: Routes = [
         (m) => m.CRUDTestComponent
       ),
   },
+  {
+    path: 'profile',
+    loadComponent: () =>
+      import('./profiles/patient-profile/patient-profile.component').then(
+        (m) => m.PatientProfileComponent
+      ),
+  },
+
   // This default path should be removed to avoid conflict
   // { path: '', redirectTo: '/front-page', pathMatch: 'full' },
 ];

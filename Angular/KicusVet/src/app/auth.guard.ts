@@ -23,4 +23,15 @@ export class AuthGuard implements CanActivate {
       });
     });
   }
+  getCurrentUserUID(): Promise<string | null> {
+    return new Promise((resolve, reject) => {
+      this.auth.onAuthStateChanged((user) => {
+        if (user) {
+          resolve(user.uid);
+        } else {
+          resolve(null);
+        }
+      });
+    });
+  }
 }
