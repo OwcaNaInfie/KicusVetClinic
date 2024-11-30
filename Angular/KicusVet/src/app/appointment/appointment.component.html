@@ -1,5 +1,18 @@
 <h2>Book an Appointment</h2>
 <form [formGroup]="appointmentForm" (ngSubmit)="onSubmit()">
+  <!-- Select Specialization -->
+  <mat-form-field appearance="fill">
+    <mat-label>Select Specialization</mat-label>
+    <mat-select
+      formControlName="specialization"
+      (selectionChange)="filterDoctors()"
+    >
+      <mat-option *ngFor="let spec of specializations" [value]="spec">
+        {{ spec }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
   <!-- Select Animal -->
   <mat-form-field appearance="fill">
     <mat-label>Select Your Animal</mat-label>
@@ -27,7 +40,7 @@
       formControlName="doctorId"
       (selectionChange)="fetchAvailableTimeSlots()"
     >
-      <mat-option *ngFor="let doctor of doctors" [value]="doctor.id">
+      <mat-option *ngFor="let doctor of filteredDoctors" [value]="doctor.id">
         {{ doctor.fullName }} ({{ doctor.specialization || "General" }})
       </mat-option>
     </mat-select>

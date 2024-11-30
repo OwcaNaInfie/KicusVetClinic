@@ -21,11 +21,9 @@ import { MatSelectModule } from '@angular/material/select';
   selector: 'app-appointment',
   templateUrl: './appointment.component.html',
   styleUrls: ['./appointment.component.css'],
-  standalone: true,
   imports: [
     MatCardModule,
     MatFormFieldModule,
-    ReactiveFormsModule,
     CommonModule,
     MatInputModule,
     MatButtonModule,
@@ -33,13 +31,22 @@ import { MatSelectModule } from '@angular/material/select';
     MatDatepickerModule,
     MatNativeDateModule,
     MatSelectModule,
+    ReactiveFormsModule,
   ],
+  standalone: true,
 })
 export class AppointmentComponent implements OnInit {
   appointmentForm: FormGroup;
   animals: any[] = [];
   doctors: any[] = [];
+  filteredDoctors: any[] = [];
   availableTimeSlots: string[] = [];
+  specializations: string[] = [
+    'Oncology',
+    'Neurology',
+    'Pathology',
+    'Radiology',
+  ];
   appointmentTypes = [
     'Routine Check-up',
     'Vaccination',
@@ -53,6 +60,7 @@ export class AppointmentComponent implements OnInit {
   ) {
     this.appointmentForm = this.fb.group({
       animalId: ['', Validators.required],
+      specialization: ['', Validators.required],
       doctorId: ['', Validators.required],
       appointmentType: ['', Validators.required],
       date: ['', Validators.required],
@@ -78,7 +86,20 @@ export class AppointmentComponent implements OnInit {
   loadDoctors() {
     this.firebaseService.getObjectList('doctors').subscribe((data) => {
       this.doctors = data;
+      this.filteredDoctors = data; // Initialize filtered doctors
     });
+  }
+
+  filterDoctors() {
+    const selectedSpecialization =
+      this.appointmentForm.get('specialization')?.value;
+    if (selectedSpecialization) {
+      this.filteredDoctors = this.doctors.filter(
+        (doctor) => doctor.specialization === selectedSpecialization
+      );
+    } else {
+      this.filteredDoctors = [...this.doctors];
+    }
   }
 
   async fetchAvailableTimeSlots() {

@@ -29,6 +29,19 @@
       </mat-select>
     </mat-form-field>
 
+    <!-- Specialization Field (Visible Only for Doctors) -->
+    <mat-form-field
+      *ngIf="registerForm.get('accountType')?.value === 'doctor'"
+      appearance="outline"
+    >
+      <mat-label>Select Specialization</mat-label>
+      <mat-select formControlName="specialization">
+        <mat-option *ngFor="let spec of specializations" [value]="spec">
+          {{ spec }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
     <button
       mat-raised-button
       color="primary"

@@ -34,6 +34,12 @@ import { Router } from '@angular/router';
 })
 export class RegisterComponent {
   registerForm: FormGroup;
+  specializations: string[] = [
+    'Oncology',
+    'Neurology',
+    'Pathology',
+    'Radiology',
+  ];
 
   constructor(
     private fb: FormBuilder,
@@ -49,14 +55,33 @@ export class RegisterComponent {
       ],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      accountType: ['', Validators.required], // New field for account type
+      accountType: ['', Validators.required], // Field for account type
+      specialization: [''], // Optional field for doctor specialization
+    });
+
+    // Listen for account type changes to toggle specialization validation
+    this.registerForm.get('accountType')?.valueChanges.subscribe((value) => {
+      if (value === 'doctor') {
+        this.registerForm
+          .get('specialization')
+          ?.setValidators(Validators.required);
+      } else {
+        this.registerForm.get('specialization')?.clearValidators();
+      }
+      this.registerForm.get('specialization')?.updateValueAndValidity();
     });
   }
 
   async onRegister() {
     if (this.registerForm.valid) {
-      const { email, password, fullName, phoneNumber, accountType } =
-        this.registerForm.value;
+      const {
+        email,
+        password,
+        fullName,
+        phoneNumber,
+        accountType,
+        specialization,
+      } = this.registerForm.value;
 
       try {
         // Create user in Firebase Authentication
@@ -88,7 +113,7 @@ export class RegisterComponent {
               fullName,
               phoneNumber,
               email,
-              specialization: '',
+              specialization,
               scheduledAppointments: [],
             };
 
