@@ -1,0 +1,49 @@
+<div class="patient-container">
+  <!-- Formularz danych pacjenta -->
+  <mat-card class="patient-card">
+    <h2>Patient Profile</h2>
+    <form
+      [formGroup]="patientForm"
+      (ngSubmit)="updatePatientData()"
+      class="form-container"
+    >
+      <mat-grid-list cols="2" rowHeight="100px" gutterSize="16px">
+        <mat-grid-tile
+          *ngFor="let control of patientForm.controls | keyvalue"
+          [colspan]="1"
+          [rowspan]="1"
+        >
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>{{ control.key }}</mat-label>
+            <input matInput [formControlName]="control.key" />
+          </mat-form-field>
+        </mat-grid-tile>
+      </mat-grid-list>
+
+      <button mat-raised-button color="primary" type="submit">Edit info</button>
+    </form>
+  </mat-card>
+
+  <!-- Przyciski i karta do dodania zwierzaka -->
+  <h3 class="animals-header">My Animals</h3>
+  <button mat-raised-button color="accent" (click)="openAnimalDialog()">
+    Add New Animal
+  </button>
+
+  <!-- Lista zwierząt -->
+  <div class="animals-container">
+    <mat-card *ngFor="let animal of animals" class="animal-card">
+      <mat-card-header>
+        <mat-card-title>{{ animal.name }}</mat-card-title>
+        <mat-card-subtitle
+          >{{ animal.species }} - {{ animal.breed }}</mat-card-subtitle
+        >
+      </mat-card-header>
+      <mat-card-content>
+        <p>Age: {{ animal.age }} years</p>
+        <p>Weight: {{ animal.weight }} kg</p>
+        <p>Notes: {{ animal.notes }}</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

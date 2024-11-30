@@ -1,0 +1,77 @@
+.animal-form-card {
+  padding: 20px;
+  max-width: 600px;
+  margin: auto;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Add gap between rows */
+}
+
+.form-row {
+  display: flex;
+  gap: 16px; /* Add gap between form fields in the same row */
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.mat-form-field.full-width {
+  flex: 1 1 100%; /* Takes up full width for a single field */
+}
+
+.mat-form-field.half-width {
+  flex: 1 1 calc(50% - 8px); /* Takes up half width for two fields */
+}
+
+mat-form-field {
+  width: 100%; /* Ensures the field takes up the full width of its parent */
+  margin-bottom: 20px;
+}
+
+button {
+  width: 100%; /* Makes the button take up the full width */
+}
+
+mat-dialog-actions {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+}
+
+h2 {
+  font-family: "Roboto", sans-serif;
+  font-size: 24px;
+  font-weight: 500;
+  color: #3f51b5;
+  text-align: center;
+  margin-bottom: 20px;
+  letter-spacing: 0.5px;
+}
+button-container {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+}
+mat-dialog-content {
+  padding: 20px;
+}
+
+/* Responsive layout for smaller screens */
+@media (max-width: 600px) {
+  .mat-form-field.half-width {
+    flex: 1 1 100%; /* Full width on small screens for Age and Weight */
+  }
+
+  .mat-form-field.full-width {
+    flex: 1 1 100%; /* Full width for the Notes field */
+  }
+
+  .form-row {
+    display: flex;
+    flex-direction: row; /* Stack elements vertically on small screens */
+    justify-content: space-between;
+  }
+}

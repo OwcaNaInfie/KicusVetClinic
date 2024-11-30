@@ -1,0 +1,54 @@
+<mat-card>
+  <h2>Register</h2>
+  <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+    <mat-form-field appearance="outline">
+      <mat-label>Full Name</mat-label>
+      <input matInput type="text" formControlName="fullName" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Phone Number</mat-label>
+      <input matInput type="text" formControlName="phoneNumber" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" formControlName="email" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Password</mat-label>
+      <input matInput type="password" formControlName="password" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Account Type</mat-label>
+      <mat-select formControlName="accountType">
+        <mat-option value="patient">Patient</mat-option>
+        <mat-option value="doctor">Doctor</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Specialization Field (Visible Only for Doctors) -->
+    <mat-form-field
+      *ngIf="registerForm.get('accountType')?.value === 'doctor'"
+      appearance="outline"
+    >
+      <mat-label>Select Specialization</mat-label>
+      <mat-select formControlName="specialization">
+        <mat-option *ngFor="let spec of specializations" [value]="spec">
+          {{ spec }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="!registerForm.valid"
+    >
+      Register
+    </button>
+  </form>
+</mat-card>

@@ -1,0 +1,72 @@
+<h2 mat-dialog-title>Add New Animal</h2>
+<mat-dialog-content>
+  <mat-card class="animal-form-card">
+    <form [formGroup]="animalForm" (ngSubmit)="onSubmit()">
+      <!-- Flexbox container for the form rows -->
+      <div class="form-grid">
+        <!-- Row 1: Animal Name -->
+        <div class="form-row">
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Animal Name</mat-label>
+            <input matInput formControlName="name" />
+          </mat-form-field>
+        </div>
+
+        <!-- Row 2: Age, Weight -->
+        <div class="form-row">
+          <mat-form-field appearance="fill" class="half-width">
+            <mat-label>Age</mat-label>
+            <input matInput type="number" formControlName="age" />
+          </mat-form-field>
+          <mat-form-field appearance="fill" class="half-width">
+            <mat-label>Weight</mat-label>
+            <input matInput type="number" formControlName="weight" />
+          </mat-form-field>
+        </div>
+
+        <!-- Row 3: Breed, Species -->
+        <div class="form-row">
+          <mat-form-field appearance="fill" class="half-width">
+            <mat-label>Breed</mat-label>
+            <input matInput formControlName="breed" />
+          </mat-form-field>
+          <mat-form-field appearance="fill" class="half-width">
+            <mat-label>Species</mat-label>
+            <input matInput formControlName="species" />
+          </mat-form-field>
+        </div>
+
+        <!-- Row 4: Notes -->
+        <div class="form-row">
+          <mat-form-field appearance="fill" class="full-width">
+            <mat-label>Notes</mat-label>
+            <textarea matInput formControlName="notes"></textarea>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div
+        class="button-container"
+        style="
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          gap: 16px;
+        "
+      >
+        <button mat-button (click)="onCancel()" style="width: 50%">
+          Cancel
+        </button>
+        <button
+          mat-raised-button
+          color="accent"
+          type="submit"
+          [disabled]="animalForm.invalid"
+          style="width: 50%"
+        >
+          Add Animal
+        </button>
+      </div>
+    </form>
+  </mat-card>
+</mat-dialog-content>
