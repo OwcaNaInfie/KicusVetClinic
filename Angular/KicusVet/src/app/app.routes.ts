@@ -41,6 +41,13 @@ export const routes: Routes = [
         (m) => m.PatientProfileComponent
       ),
   },
+  {
+    path: 'appointment',
+    loadComponent: () =>
+      import('./appointment/appointment.component').then(
+        (m) => m.AppointmentComponent
+      ),
+  },
 
   // This default path should be removed to avoid conflict
   // { path: '', redirectTo: '/front-page', pathMatch: 'full' },

@@ -1,0 +1,67 @@
+<h2>Book an Appointment</h2>
+<form [formGroup]="appointmentForm" (ngSubmit)="onSubmit()">
+  <!-- Select Animal -->
+  <mat-form-field appearance="fill">
+    <mat-label>Select Your Animal</mat-label>
+    <mat-select formControlName="animalId">
+      <mat-option *ngFor="let animal of animals" [value]="animal">
+        {{ animal.name }} ({{ animal.species }})
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!-- Select Appointment Type -->
+  <mat-form-field appearance="fill">
+    <mat-label>Appointment Type</mat-label>
+    <mat-select formControlName="appointmentType">
+      <mat-option *ngFor="let type of appointmentTypes" [value]="type">
+        {{ type }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!-- Select Doctor -->
+  <mat-form-field appearance="fill">
+    <mat-label>Select Doctor</mat-label>
+    <mat-select
+      formControlName="doctorId"
+      (selectionChange)="fetchAvailableTimeSlots()"
+    >
+      <mat-option *ngFor="let doctor of doctors" [value]="doctor.id">
+        {{ doctor.fullName }} ({{ doctor.specialization || "General" }})
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!-- Select Date -->
+  <mat-form-field appearance="fill">
+    <mat-label>Select Date</mat-label>
+    <input
+      matInput
+      [matDatepicker]="picker"
+      formControlName="date"
+      (dateChange)="fetchAvailableTimeSlots()"
+    />
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
+  <!-- Select Time Slot -->
+  <mat-form-field appearance="fill" *ngIf="availableTimeSlots.length">
+    <mat-label>Select Time Slot</mat-label>
+    <mat-select formControlName="timeSlot">
+      <mat-option *ngFor="let time of availableTimeSlots" [value]="time">
+        {{ time }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <button
+    mat-raised-button
+    color="primary"
+    type="submit"
+    [disabled]="appointmentForm.invalid"
+  >
+    Confirm Appointment
+  </button>
+</form>
