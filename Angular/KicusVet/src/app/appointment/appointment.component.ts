@@ -16,7 +16,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
-
+import { PatientAppointmentsComponent } from '../patient-appointments/patient-appointments.component';
 @Component({
   selector: 'app-appointment',
   templateUrl: './appointment.component.html',
@@ -32,6 +32,7 @@ import { MatSelectModule } from '@angular/material/select';
     MatNativeDateModule,
     MatSelectModule,
     ReactiveFormsModule,
+    PatientAppointmentsComponent,
   ],
   standalone: true,
 })
@@ -156,6 +157,7 @@ export class AppointmentComponent implements OnInit {
         ...this.appointmentForm.value,
         patientId: uid,
         status: 'scheduled',
+        date: date.toISOString().split('T')[0],
       };
 
       // Save appointment
