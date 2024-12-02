@@ -1,0 +1,49 @@
+<h2 mat-dialog-title>Edit Appointment</h2>
+<form
+  [formGroup]="appointmentForm"
+  (ngSubmit)="saveChanges()"
+  class="appointment-form"
+>
+  <mat-form-field appearance="fill" class="form-field">
+    <mat-label>Status</mat-label>
+    <mat-select formControlName="status">
+      <mat-option value="Pending">Pending</mat-option>
+      <mat-option value="Completed">Completed</mat-option>
+      <mat-option value="Canceled">Canceled</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="form-field">
+    <mat-label>Date</mat-label>
+    <input matInput [matDatepicker]="picker" formControlName="date" />
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="form-field">
+    <mat-label>Time</mat-label>
+    <input matInput type="time" formControlName="time" />
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="form-field">
+    <mat-label>Reason</mat-label>
+    <textarea matInput formControlName="reason"></textarea>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" class="form-field">
+    <mat-label>Recommendations</mat-label>
+    <textarea matInput formControlName="recommendations" rows="4"></textarea>
+  </mat-form-field>
+
+  <div class="dialog-actions">
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="appointmentForm.invalid"
+    >
+      Save
+    </button>
+    <button mat-button type="button" (click)="closeDialog()">Cancel</button>
+  </div>
+</form>

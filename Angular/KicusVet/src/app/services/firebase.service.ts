@@ -33,6 +33,16 @@ export class FirebaseService {
       return null;
     }
   }
+  async getDoctorDataByUID(uid: string): Promise<any | null> {
+    const dbRef = ref(this.db, `doctors/${uid}`);
+    const snapshot = await get(dbRef);
+
+    if (snapshot.exists()) {
+      return snapshot.val();
+    } else {
+      return null;
+    }
+  }
 
   getObjectList(path: string): Observable<any[]> {
     const dbRef = ref(this.db, path);
