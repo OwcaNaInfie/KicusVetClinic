@@ -1,0 +1,26 @@
+.appointment-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 40px;
+}
+.form {
+  padding: 20px;
+}
+.form-field {
+  width: 100%;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+}
+
+textarea {
+  resize: none;
+}
+
+button {
+  min-width: 100px;
+}

@@ -1,0 +1,58 @@
+<div class="appointments-container">
+  <h3 class="appointment-header">Your Appointments</h3>
+
+  <!-- Upcoming Appointments -->
+  <mat-card
+    class="appointment-card"
+    *ngIf="upcomingAppointments.length; else noUpcoming"
+  >
+    <h4 class="appointment-header">Upcoming Appointments</h4>
+    <div
+      *ngFor="let appointment of upcomingAppointments"
+      class="appointment upcoming"
+    >
+      <p>
+        <strong>Date:</strong> {{ appointment.date }} <strong>Time:</strong>
+        {{ appointment.timeSlot }}
+      </p>
+      <p>
+        <strong>Doctor:</strong> {{ getDoctorFullName(appointment.doctorId) }}
+        <strong>Status:</strong> {{ appointment.status }}
+      </p>
+      <p>
+        <strong>Animal:</strong> {{ appointment.animalId.name }}
+        <strong>Breed:</strong> {{ appointment.animalId.breed }}
+      </p>
+    </div>
+  </mat-card>
+
+  <ng-template #noUpcoming>
+    <p class="empty-state">No upcoming appointments.</p>
+  </ng-template>
+
+  <!-- Past Appointments -->
+  <mat-card
+    class="appointment-card"
+    *ngIf="pastAppointments.length; else noPast"
+  >
+    <h4 class="appointment-header">Past Appointments</h4>
+    <div *ngFor="let appointment of pastAppointments" class="appointment past">
+      <p>
+        <strong>Date:</strong> {{ appointment.date }} <strong>Time:</strong>
+        {{ appointment.timeSlot }}
+      </p>
+      <p>
+        <strong>Doctor:</strong> {{ getDoctorFullName(appointment.doctorId) }}
+        <strong>Status:</strong> {{ appointment.status }}
+      </p>
+      <p>
+        <strong>Animal:</strong> {{ appointment.animalId.name }}
+        <strong>Breed:</strong> {{ appointment.animalId.breed }}
+      </p>
+    </div>
+  </mat-card>
+
+  <ng-template #noPast>
+    <p class="empty-state">No past appointments.</p>
+  </ng-template>
+</div>

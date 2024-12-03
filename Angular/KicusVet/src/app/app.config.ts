@@ -19,7 +19,7 @@ import { environment } from '../environments/environment';
 import { provideDatabase, getDatabase } from '@angular/fire/database';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { HttpClientModule } from '@angular/common/http';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
@@ -36,7 +36,8 @@ export const appConfig: ApplicationConfig = {
       MatFormFieldModule,
       MatCardModule,
       BrowserModule,
-      BrowserAnimationsModule
+      BrowserAnimationsModule,
+      HttpClientModule
     ),
     provideDatabase(() => getDatabase()),
   ],

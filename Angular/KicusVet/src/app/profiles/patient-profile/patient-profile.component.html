@@ -1,5 +1,4 @@
 <div class="patient-container">
-  <!-- Formularz danych pacjenta -->
   <mat-card class="patient-card">
     <h2>Patient Profile</h2>
     <form
@@ -20,24 +19,26 @@
         </mat-grid-tile>
       </mat-grid-list>
 
-      <button mat-raised-button color="primary" type="submit">Edit info</button>
+      <button mat-raised-button color="primary" type="submit">Edit Info</button>
     </form>
   </mat-card>
 
-  <!-- Przyciski i karta do dodania zwierzaka -->
   <h3 class="animals-header">My Animals</h3>
   <button mat-raised-button color="accent" (click)="openAnimalDialog()">
     Add New Animal
   </button>
 
-  <!-- Lista zwierząt -->
   <div class="animals-container">
-    <mat-card *ngFor="let animal of animals" class="animal-card">
+    <mat-card
+      *ngFor="let animal of animals"
+      class="animal-card"
+      (click)="openAnimalEditDialog(animal)"
+    >
       <mat-card-header>
         <mat-card-title>{{ animal.name }}</mat-card-title>
-        <mat-card-subtitle
-          >{{ animal.species }} - {{ animal.breed }}</mat-card-subtitle
-        >
+        <mat-card-subtitle>
+          {{ animal.species }} - {{ animal.breed }}
+        </mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
         <p>Age: {{ animal.age }} years</p>

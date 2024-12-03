@@ -11,6 +11,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDialog } from '@angular/material/dialog';
 import { AnimalDialogComponent } from '../../modals/add-animal/add-animal.component';
+import { AnimalEditDialogComponent } from '../../modals/animal-edit-dialog/animal-edit-dialog.component';
+import { doc } from 'firebase/firestore';
 @Component({
   selector: 'app-patient-profile',
   templateUrl: './patient-profile.component.html',
@@ -32,7 +34,8 @@ export class PatientProfileComponent implements OnInit {
   animals: any[] = []; // Lista zwierząt pacjenta
   animalForm!: FormGroup; // Formularz do dodawania nowego zwierzęcia
   uid: string | null = null; // UID zalogowanego użytkownika
-
+  appointments: any[] = []; // Lista wizyt pacjenta
+  doctors: any[] = []; // Lista lekar
   constructor(
     private fb: FormBuilder,
     private firebaseService: FirebaseService,
@@ -46,12 +49,44 @@ export class PatientProfileComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (result) {
-        this.addAnimal(result); // Przekazanie wyników z formularza
+        this.addAnimal(result);
+      }
+    });
+  }
+  openAnimalEditDialog(animal: any): void {
+    const dialogRef = this.dialog.open(AnimalEditDialogComponent, {
+      width: '600px',
+      data: {
+        ...animal,
+        appointments: this.appointments,
+        doctors: this.doctors,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((updatedAnimal) => {
+      if (updatedAnimal) {
+        const index = this.animals.findIndex((a) => a.name === animal.name);
+        if (index !== -1) {
+          this.animals[index] = updatedAnimal;
+          this.updatePatientData();
+        }
       }
     });
   }
   async ngOnInit(): Promise<void> {
-    // Formularz pacjenta
+    this.firebaseService.getObjectList('doctors').subscribe((data) => {
+      this.doctors = data;
+      console.log('DOCTORS: ', this.doctors);
+    });
+    this.firebaseService.getObjectList('appointments').subscribe(
+      (data) => {
+        this.appointments = data.filter((a: any) => a.patientId === this.uid);
+        console.log(this.appointments);
+      },
+      (error) => {
+        console.error('Error fetching appointments:', error);
+      }
+    );
     this.patientForm = this.fb.group({
       fullName: ['', Validators.required],
       phoneNumber: [
@@ -61,7 +96,6 @@ export class PatientProfileComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
     });
 
-    // Formularz nowego zwierzęcia
     this.animalForm = this.fb.group({
       name: ['', Validators.required],
       age: [0, [Validators.required, Validators.min(0)]],
@@ -71,7 +105,6 @@ export class PatientProfileComponent implements OnInit {
       notes: [''],
     });
 
-    // Pobierz dane użytkownika i pacjenta
     this.uid = await this.authService.getCurrentUserUID();
     if (this.uid) {
       this.loadPatientData();
@@ -80,7 +113,6 @@ export class PatientProfileComponent implements OnInit {
     }
   }
 
-  // Pobieranie danych pacjenta
   async loadPatientData(): Promise<void> {
     if (this.uid) {
       const patientData = await this.firebaseService.getPatientDataByUID(
@@ -99,12 +131,11 @@ export class PatientProfileComponent implements OnInit {
     }
   }
 
-  // Aktualizacja danych pacjenta
   async updatePatientData(): Promise<void> {
     if (this.uid && this.patientForm.valid) {
       const updatedData = {
         ...this.patientForm.value,
-        animals: this.animals, // Zachowaj istniejące zwierzęta
+        animals: this.animals,
       };
       await this.firebaseService.updateObject(
         'patients',
@@ -115,7 +146,6 @@ export class PatientProfileComponent implements OnInit {
     }
   }
 
-  // Dodawanie nowego zwierzęcia
   async addAnimal(newAnimal: any): Promise<void> {
     if (this.uid && newAnimal) {
       this.animals.push(newAnimal);
