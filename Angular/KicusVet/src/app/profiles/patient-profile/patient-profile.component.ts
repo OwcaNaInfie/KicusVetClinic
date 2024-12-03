@@ -13,6 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AnimalDialogComponent } from '../../modals/add-animal/add-animal.component';
 import { AnimalEditDialogComponent } from '../../modals/animal-edit-dialog/animal-edit-dialog.component';
 import { doc } from 'firebase/firestore';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-patient-profile',
   templateUrl: './patient-profile.component.html',
@@ -40,7 +41,8 @@ export class PatientProfileComponent implements OnInit {
     private fb: FormBuilder,
     private firebaseService: FirebaseService,
     private authService: AuthGuard,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private router: Router
   ) {}
   async openAnimalDialog(): Promise<void> {
     const dialogRef = this.dialog.open(AnimalDialogComponent, {
@@ -111,6 +113,9 @@ export class PatientProfileComponent implements OnInit {
     } else {
       console.error('User is not logged in');
     }
+  }
+  goToAppointments(): void {
+    this.router.navigate(['/appointment']);
   }
 
   async loadPatientData(): Promise<void> {

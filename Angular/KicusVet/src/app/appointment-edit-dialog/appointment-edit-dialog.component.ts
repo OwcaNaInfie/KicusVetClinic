@@ -58,14 +58,13 @@ export class AppointmentEditDialogComponent {
 
   saveChanges() {
     if (this.appointmentForm.valid) {
-      // Email content
       const emailSubject = `Appointment Update - ${this.appointmentForm.value.status}`;
       const emailText = `Dear Patient`;
       this.emailService
         .sendEmail(
           'raishishi666@gmail.com',
           this.appointmentForm.value.date,
-          'Dr. Example', // Replace with actual doctor's name
+          'Dr. Example',
           this.appointmentForm.value.status,
           this.appointmentForm.value.reason
         )
@@ -78,7 +77,6 @@ export class AppointmentEditDialogComponent {
           }
         );
 
-      // Close the dialog after saving the changes
       this.dialogRef.close(this.appointmentForm.value);
     }
   }
