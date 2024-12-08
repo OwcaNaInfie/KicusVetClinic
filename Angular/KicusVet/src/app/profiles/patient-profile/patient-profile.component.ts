@@ -1,48 +1,90 @@
 import { Component, NO_ERRORS_SCHEMA, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
-import { FirebaseService } from '../../services/firebase.service';
-import { AuthGuard } from '../../auth.guard';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatDialogModule } from '@angular/material/dialog';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { AnimalDialogComponent } from '../../modals/add-animal/add-animal.component';
 import { AnimalEditDialogComponent } from '../../modals/animal-edit-dialog/animal-edit-dialog.component';
-import { doc } from 'firebase/firestore';
+import { v4 as uuidv4 } from 'uuid';
+import { CommonModule } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { AuthGuard } from '../../auth.guard';
+
 @Component({
   selector: 'app-patient-profile',
   templateUrl: './patient-profile.component.html',
   styleUrls: ['./patient-profile.component.css'],
-  imports: [
-    MatCardModule,
-    MatFormFieldModule,
-    ReactiveFormsModule,
-    CommonModule,
-    MatInputModule,
-    MatButtonModule,
-    MatDialogModule,
-  ],
   standalone: true,
   schemas: [NO_ERRORS_SCHEMA],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+  ],
 })
 export class PatientProfileComponent implements OnInit {
   patientForm!: FormGroup;
-  animals: any[] = []; // Lista zwierząt pacjenta
-  animalForm!: FormGroup; // Formularz do dodawania nowego zwierzęcia
-  uid: string | null = null; // UID zalogowanego użytkownika
-  appointments: any[] = []; // Lista wizyt pacjenta
-  doctors: any[] = []; // Lista lekar
+  animals: any[] = [];
+  appointments: any[] = [];
+  doctors: any[] = [];
+  uid: string | null = null;
+  private apiUrl = 'http://localhost:3000';
+
   constructor(
     private fb: FormBuilder,
-    private firebaseService: FirebaseService,
-    private authService: AuthGuard,
-    private dialog: MatDialog
+    private http: HttpClient,
+    private dialog: MatDialog,
+    private router: Router,
+    private guard: AuthGuard
   ) {}
-  async openAnimalDialog(): Promise<void> {
+
+  async ngOnInit(): Promise<void> {
+    this.patientForm = this.fb.group({
+      fullName: ['', Validators.required],
+      phoneNumber: [
+        '',
+        [Validators.required, Validators.pattern('^[0-9]{9,12}$')],
+      ],
+      email: ['', [Validators.required, Validators.email]],
+    });
+
+    this.uid = await this.guard.getCurrentUserUID();
+    if (this.uid) {
+      this.loadPatientData();
+      this.loadDoctorsAndAppointments();
+    } else {
+      console.error('User is not logged in');
+    }
+  }
+
+  async loadPatientData(): Promise<void> {
+    if (this.uid) {
+      this.http.get<any>(`${this.apiUrl}/patients/${this.uid}`).subscribe(
+        (patientData) => {
+          this.patientForm.patchValue({
+            fullName: patientData.fullName,
+            phoneNumber: patientData.phoneNumber,
+            email: patientData.email,
+          });
+          this.animals = patientData.animals || [];
+        },
+        (error) => console.error('Error fetching patient data:', error)
+      );
+    }
+  }
+
+  openAnimalDialog(): void {
     const dialogRef = this.dialog.open(AnimalDialogComponent, {
       width: '500px',
     });
@@ -53,6 +95,63 @@ export class PatientProfileComponent implements OnInit {
       }
     });
   }
+  updatePatientData(): void {
+    if (this.patientForm.valid) {
+      const updatedData = {
+        ...this.patientForm.value,
+        animals: this.animals,
+      };
+      this.http
+        .put(`${this.apiUrl}/update/patients/${this.uid}`, updatedData)
+        .subscribe(
+          () => alert('Patient data updated successfully!'),
+          (error) => console.error('Error updating patient data:', error)
+        );
+    } else {
+      alert('Please fill out the required fields correctly.');
+    }
+  }
+  goToAppointments(): void {
+    this.router.navigate(['/appointment']);
+  }
+  addAnimal(newAnimal: any): void {
+    if (this.uid && newAnimal) {
+      const animalWithId = {
+        ...newAnimal,
+        id: uuidv4(),
+      };
+
+      this.animals.push(animalWithId);
+
+      const updatedData = {
+        ...this.patientForm.value,
+        animals: this.animals,
+      };
+
+      this.http
+        .put(`${this.apiUrl}/update/patients/${this.uid}`, updatedData)
+        .subscribe(
+          () => alert('Animal added successfully!'),
+          (error) => console.error('Error adding animal:', error)
+        );
+    }
+  }
+  loadDoctorsAndAppointments(): void {
+    this.http.get<any[]>(`${this.apiUrl}/list/doctors`).subscribe(
+      (data) => {
+        this.doctors = data;
+      },
+      (error) => console.error('Error fetching doctors:', error)
+    );
+
+    this.http.get<any[]>(`${this.apiUrl}/list/appointments`).subscribe(
+      (data) => {
+        this.appointments = data;
+      },
+      (error) => console.error('Error fetching appointments:', error)
+    );
+  }
+
   openAnimalEditDialog(animal: any): void {
     const dialogRef = this.dialog.open(AnimalEditDialogComponent, {
       width: '600px',
@@ -63,104 +162,72 @@ export class PatientProfileComponent implements OnInit {
       },
     });
 
-    dialogRef.afterClosed().subscribe((updatedAnimal) => {
-      if (updatedAnimal) {
-        const index = this.animals.findIndex((a) => a.name === animal.name);
-        if (index !== -1) {
-          this.animals[index] = updatedAnimal;
-          this.updatePatientData();
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        console.log('Dialog closed with result:', result);
+
+        if (result.action === 'save' && result.animal) {
+          const updatedAnimal = result.animal;
+          if (!updatedAnimal.id) {
+            updatedAnimal.id = uuidv4();
+          }
+
+          const index = this.animals.findIndex(
+            (a) => a.id === updatedAnimal.id
+          );
+          if (index !== -1) {
+            this.animals[index] = updatedAnimal;
+            const updatedData = {
+              ...this.patientForm.value,
+              animals: this.animals,
+            };
+            this.http
+              .put(`${this.apiUrl}/update/patients/${this.uid}`, updatedData)
+              .subscribe(
+                () => alert('Animal updated successfully!'),
+                (error) => console.error('Error updating animal:', error)
+              );
+          }
+        } else if (result.action === 'delete' && result.id) {
+          this.deleteAnimal(result.id);
         }
       }
     });
   }
-  async ngOnInit(): Promise<void> {
-    this.firebaseService.getObjectList('doctors').subscribe((data) => {
-      this.doctors = data;
-      console.log('DOCTORS: ', this.doctors);
-    });
-    this.firebaseService.getObjectList('appointments').subscribe(
-      (data) => {
-        this.appointments = data.filter((a: any) => a.patientId === this.uid);
-        console.log(this.appointments);
-      },
-      (error) => {
-        console.error('Error fetching appointments:', error);
-      }
-    );
-    this.patientForm = this.fb.group({
-      fullName: ['', Validators.required],
-      phoneNumber: [
-        '',
-        [Validators.required, Validators.pattern('^[0-9]{9,12}$')],
-      ],
-      email: ['', [Validators.required, Validators.email]],
-    });
 
-    this.animalForm = this.fb.group({
-      name: ['', Validators.required],
-      age: [0, [Validators.required, Validators.min(0)]],
-      breed: ['', Validators.required],
-      species: ['', Validators.required],
-      weight: [0, [Validators.required, Validators.min(0)]],
-      notes: [''],
-    });
-
-    this.uid = await this.authService.getCurrentUserUID();
-    if (this.uid) {
-      this.loadPatientData();
-    } else {
-      console.error('User is not logged in');
+  deleteAnimal(animalId: string): void {
+    console.log('Deleting animal with ID:', animalId);
+    if (!animalId) {
+      console.error('Animal ID is required for deletion');
+      return;
     }
-  }
 
-  async loadPatientData(): Promise<void> {
-    if (this.uid) {
-      const patientData = await this.firebaseService.getPatientDataByUID(
-        this.uid
+    const index = this.animals.findIndex((animal) => animal.id === animalId);
+    if (index !== -1) {
+      const deleteUrl = `${this.apiUrl}/delete/patients/${this.uid}/animals/${index}`;
+
+      this.http.delete(deleteUrl).subscribe(
+        () => {
+          this.animals = this.animals.filter(
+            (animal) => animal.id !== animalId
+          );
+          const updatedData = {
+            ...this.patientForm.value,
+            animals: this.animals,
+          };
+          this.http
+            .put(`${this.apiUrl}/update/patients/${this.uid}`, updatedData)
+            .subscribe(
+              () => alert('Animal deleted successfully!'),
+              (error) =>
+                console.error(
+                  'Error updating patient data after animal deletion:',
+                  error
+                )
+            );
+        },
+        (error) => console.error('Error deleting animal:', error)
       );
-      if (patientData) {
-        this.patientForm.patchValue({
-          fullName: patientData.fullName,
-          phoneNumber: patientData.phoneNumber,
-          email: patientData.email,
-        });
-        this.animals = patientData.animals || [];
-      } else {
-        console.error('Patient data not found');
-      }
-    }
-  }
-
-  async updatePatientData(): Promise<void> {
-    if (this.uid && this.patientForm.valid) {
-      const updatedData = {
-        ...this.patientForm.value,
-        animals: this.animals,
-      };
-      await this.firebaseService.updateObject(
-        'patients',
-        this.uid,
-        updatedData
-      );
-      alert('Patient data updated successfully!');
-    }
-  }
-
-  async addAnimal(newAnimal: any): Promise<void> {
-    if (this.uid && newAnimal) {
-      this.animals.push(newAnimal);
-
-      const updatedData = {
-        ...this.patientForm.value,
-        animals: this.animals,
-      };
-      await this.firebaseService.updateObject(
-        'patients',
-        this.uid,
-        updatedData
-      );
-
-      alert('Animal added successfully!');
     }
   }
 }

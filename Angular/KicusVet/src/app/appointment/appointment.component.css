@@ -13,3 +13,12 @@ mat-form-field {
 button {
   align-self: center;
 }
+h2 {
+  font-family: "Roboto", sans-serif; /* Dopasowanie fontu do Angular Material */
+  font-size: 24px; /* Dopasowanie wielkości tekstu */
+  font-weight: 500; /* Grubość tekstu, zgodna z Material Design */
+  color: #3f51b5; /* Ten sam kolor co akcent w Angular Material */
+  text-align: center;
+  margin-bottom: 20px; /* Odstęp od formularza */
+  letter-spacing: 0.5px; /* Lekki rozstrzał liter */
+}

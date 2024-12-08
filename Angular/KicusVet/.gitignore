@@ -11,6 +11,10 @@
 npm-debug.log
 yarn-error.log
 /email-system/node_modules
+/email-system/.env
+
+/backedserver/node_modules
+/backedserver/firebase-key.json
 # IDEs and editors
 .idea/
 .project

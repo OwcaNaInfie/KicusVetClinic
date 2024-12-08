@@ -57,12 +57,11 @@ export class AnimalEditDialogComponent {
       weight: [data.weight, [Validators.required, Validators.min(0)]],
       notes: [data.notes],
     });
-    console.log('TAKIECOS', this.animalForm.value.name);
     this.appointments =
-      data.appointments.filter((appointment: Appointment) => {
+      data?.appointments?.filter((appointment: Appointment) => {
         return appointment.animalId.name === this.animalForm.value.name;
       }) || [];
-    this.doctors = data.doctors || [];
+    this.doctors = data?.doctors || [];
   }
 
   getDoctorFullName(doctorId: string): string {
@@ -71,10 +70,15 @@ export class AnimalEditDialogComponent {
   }
   saveChanges(): void {
     if (this.animalForm.valid) {
-      this.dialogRef.close(this.animalForm.value);
+      this.dialogRef.close({
+        action: 'save',
+        animal: { ...this.animalForm.value, id: this.data.id },
+      });
     }
   }
-
+  confirmDelete(): void {
+    this.dialogRef.close({ action: 'delete', id: this.data.id });
+  }
   closeDialog(): void {
     this.dialogRef.close();
   }

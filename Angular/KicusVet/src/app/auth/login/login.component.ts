@@ -13,6 +13,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { Router } from '@angular/router'; // Import Router
+import { AuthGuard } from '../../auth.guard';
+import { FirebaseService } from '../../services/firebase.service';
 
 @Component({
   selector: 'app-login',
@@ -35,7 +37,9 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private auth: Auth,
-    private router: Router // Inject Router here
+    private router: Router,
+    private authGuard: AuthGuard,
+    private firebaseService: FirebaseService
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -52,8 +56,17 @@ export class LoginComponent {
           email,
           password
         );
+        const currentId = await this.authGuard.getCurrentUserUID();
         console.log('User logged in:', userCredential);
-        this.router.navigate(['/front-page']);
+
+        const isDoctor = await this.firebaseService.getDoctorDataByUID(
+          currentId || ''
+        );
+        if (isDoctor) {
+          this.router.navigate(['/doctor']);
+        } else {
+          this.router.navigate(['/profile']);
+        }
       } catch (error) {
         console.error('Error during login:', error);
       }

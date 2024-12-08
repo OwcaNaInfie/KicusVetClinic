@@ -87,7 +87,7 @@ export class AppointmentComponent implements OnInit {
   loadDoctors() {
     this.firebaseService.getObjectList('doctors').subscribe((data) => {
       this.doctors = data;
-      this.filteredDoctors = data; // Initialize filtered doctors
+      this.filteredDoctors = data;
     });
   }
 
@@ -160,20 +160,18 @@ export class AppointmentComponent implements OnInit {
         date: date.toISOString().split('T')[0],
       };
 
-      // Save appointment
       await this.firebaseService.addObjectWithAutoID(
         'appointments',
         appointment
       );
 
-      // Save booked hour to doctor's bookedHours
       await this.firebaseService.addObjectWithAutoID(
         `doctors/${doctorId}/bookedHours/${date}`,
         { time: timeSlot }
       );
 
       alert('Appointment successfully booked!');
-      this.availableTimeSlots = []; // Reset time slots after booking
+      this.availableTimeSlots = [];
     }
   }
 }

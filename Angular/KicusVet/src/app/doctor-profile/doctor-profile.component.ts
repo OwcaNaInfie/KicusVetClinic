@@ -5,7 +5,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { FirebaseService } from '../services/firebase.service';
+import { HttpClient } from '@angular/common/http';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { AppointmentEditDialogComponent } from '../appointment-edit-dialog/appointment-edit-dialog.component';
 import { MatCardModule } from '@angular/material/card';
@@ -16,6 +16,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { AuthGuard } from '../auth.guard';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { FirebaseService } from '../services/firebase.service';
 
 @Component({
   selector: 'app-doctor-profile',
@@ -39,12 +40,14 @@ export class DoctorProfileComponent implements OnInit {
   doctorForm: FormGroup;
   appointments: any[] = [];
   filteredAppointments: any[] = [];
+  private apiUrl = 'http://localhost:3000';
 
   constructor(
     private fb: FormBuilder,
-    private firebaseService: FirebaseService,
+    private http: HttpClient,
     private dialog: MatDialog,
-    private guard: AuthGuard
+    private guard: AuthGuard,
+    private firebaseService: FirebaseService
   ) {
     this.doctorForm = this.fb.group({
       fullName: ['', Validators.required],
@@ -55,36 +58,47 @@ export class DoctorProfileComponent implements OnInit {
   }
 
   async ngOnInit() {
-    const doctorId = await this.guard.getCurrentUserUID(); // Get current doctor ID
+    const doctorId = await this.guard.getCurrentUserUID();
     if (!doctorId) {
       console.error('Failed to fetch doctor ID');
       return;
     }
 
-    const doctorData = await this.firebaseService.getDoctorDataByUID(doctorId); // Fetch doctor data
-    if (doctorData) {
-      this.doctorForm.patchValue(doctorData); // Set form fields with actual data
-    }
+    this.http.get(`${this.apiUrl}/doctors/${doctorId}`).subscribe(
+      (doctorData: any) => {
+        if (doctorData) {
+          this.doctorForm.patchValue(doctorData);
+        }
+      },
+      (error) => console.error('Error fetching doctor data:', error)
+    );
 
-    this.firebaseService
-      .getObjectList(`appointments`)
-      .subscribe((appointments) => {
+    this.http.get<any[]>(`${this.apiUrl}/list/appointments`).subscribe(
+      (appointments: any[]) => {
         this.appointments = appointments.filter(
           (app) => app.doctorId === doctorId
         );
         this.filteredAppointments = [...this.appointments];
-      });
+      },
+      (error) => console.error('Error fetching appointments:', error)
+    );
   }
 
   async updateDoctorData() {
     if (this.doctorForm.valid) {
       const doctorId = await this.guard.getCurrentUserUID();
       if (doctorId) {
-        this.firebaseService.updateObject(
-          'doctors',
-          doctorId,
-          this.doctorForm.value
-        );
+        this.http
+          .put(
+            `${this.apiUrl}/update/doctors/${doctorId}`,
+            this.doctorForm.value
+          )
+          .subscribe(
+            () => {
+              console.log('Doctor data updated successfully');
+            },
+            (error) => console.error('Error updating doctor data:', error)
+          );
       } else {
         console.error('Failed to get current user ID');
       }
@@ -99,20 +113,66 @@ export class DoctorProfileComponent implements OnInit {
       : [...this.appointments];
   }
 
-  openAppointmentDialog(appointment: any) {
-    const dialogRef = this.dialog.open(AppointmentEditDialogComponent, {
-      width: '400px',
-      data: appointment,
-    });
+  async openAppointmentDialog(appointment: any) {
+    try {
+      const patientData = await this.firebaseService.getPatientDataByUID(
+        appointment.patientId
+      );
 
-    dialogRef.afterClosed().subscribe((updatedAppointment) => {
-      if (updatedAppointment) {
-        this.firebaseService.updateObject(
-          'appointments',
-          appointment.id,
-          updatedAppointment
-        );
+      if (!patientData) {
+        console.error('Nie znaleziono danych pacjenta');
+        return;
       }
-    });
+
+      const doctorData = await this.firebaseService.getDoctorDataByUID(
+        appointment.doctorId
+      );
+
+      if (!doctorData) {
+        console.error('Nie znaleziono danych lekarza');
+        return;
+      }
+
+      const dialogData = {
+        ...appointment,
+        patient: patientData,
+        doctor: doctorData,
+      };
+
+      const dialogRef = this.dialog.open(AppointmentEditDialogComponent, {
+        width: '400px',
+        data: dialogData,
+      });
+
+      dialogRef.afterClosed().subscribe((updatedAppointment) => {
+        if (updatedAppointment) {
+          this.http
+            .put(
+              `${this.apiUrl}/update/appointments/${appointment.id}`,
+              updatedAppointment
+            )
+            .subscribe(
+              () => {
+                console.log('Appointment updated successfully');
+
+                const index = this.appointments.findIndex(
+                  (app) => app.id === appointment.id
+                );
+                if (index !== -1) {
+                  this.appointments[index] = {
+                    ...this.appointments[index],
+                    ...updatedAppointment,
+                  };
+
+                  this.filteredAppointments = [...this.appointments];
+                }
+              },
+              (error) => console.error('Error updating appointment:', error)
+            );
+        }
+      });
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
   }
 }

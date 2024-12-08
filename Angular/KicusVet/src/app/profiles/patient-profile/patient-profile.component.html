@@ -18,8 +18,27 @@
           </mat-form-field>
         </mat-grid-tile>
       </mat-grid-list>
+      <div
+        style="
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+          gap: 20px;
+        "
+      >
+        <button
+          mat-raised-button
+          color="primary"
+          type="button"
+          (click)="goToAppointments()"
+        >
+          Schedule an Appointment
+        </button>
 
-      <button mat-raised-button color="primary" type="submit">Edit Info</button>
+        <button mat-raised-button color="primary" type="submit">
+          Edit Info
+        </button>
+      </div>
     </form>
   </mat-card>
 

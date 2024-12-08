@@ -14,12 +14,12 @@ export class AuthGuard implements CanActivate {
     return new Observable<boolean>((subscriber) => {
       this.auth.onAuthStateChanged((user) => {
         if (user) {
-          subscriber.next(true); // Allow navigation
+          subscriber.next(true);
         } else {
-          this.router.navigate(['/login']); // Redirect to login
-          subscriber.next(false); // Prevent navigation
+          this.router.navigate(['/login']);
+          subscriber.next(false);
         }
-        subscriber.complete(); // Close the Observable
+        subscriber.complete();
       });
     });
   }
