@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { Component, Inject } from '@angular/core';
 import {
   FormBuilder,
@@ -37,6 +37,7 @@ import { EmailService } from '../email.service';
     MatSelectModule,
   ],
   standalone: true,
+  providers: [DatePipe],
 })
 export class AppointmentEditDialogComponent {
   appointmentForm: FormGroup;
@@ -45,7 +46,8 @@ export class AppointmentEditDialogComponent {
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<AppointmentEditDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private emailService: EmailService
+    private emailService: EmailService,
+    private datePipe: DatePipe
   ) {
     this.appointmentForm = this.fb.group({
       status: [data.status, Validators.required],
@@ -55,16 +57,22 @@ export class AppointmentEditDialogComponent {
       recommendations: [data.recommendations || '', Validators.required],
     });
   }
-
   saveChanges() {
     if (this.appointmentForm.valid) {
       const emailSubject = `Appointment Update - ${this.appointmentForm.value.status}`;
-      const emailText = `Dear Patient`;
+      const emailText = `Dear ${this.data.patient?.fullName}`;
+      const rawDate = this.appointmentForm.value.date;
+      const formattedDate = this.datePipe.transform(rawDate, 'dd/MM/yyyy');
+
+      if (!formattedDate) {
+        console.error('Date formatting failed');
+        return;
+      }
       this.emailService
         .sendEmail(
           'raishishi666@gmail.com',
-          this.appointmentForm.value.date,
-          'Dr. Example',
+          formattedDate,
+          `Dr. ${this.data?.doctor?.fullName}`,
           this.appointmentForm.value.status,
           this.appointmentForm.value.reason
         )

@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class EmailService {
-  private apiUrl = 'http://localhost:3000/send-update-email';
+  private apiUrl = 'http://localhost:2137/send-update-email';
 
   constructor(private http: HttpClient) {}
 

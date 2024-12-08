@@ -70,9 +70,17 @@
       </mat-list>
 
       <div class="button-container">
+        <!-- Cancel button (close dialog) -->
         <button mat-button (click)="closeDialog()" style="width: 50%">
           Cancel
         </button>
+
+        <!-- Delete button (prevent form submission) -->
+        <button mat-button color="warn" type="button" (click)="confirmDelete()">
+          Delete
+        </button>
+
+        <!-- Save button (form submission) -->
         <button
           mat-raised-button
           color="primary"
