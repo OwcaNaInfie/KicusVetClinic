@@ -55,7 +55,7 @@ export class PatientAppointmentsComponent implements OnInit {
 
     this.firebaseService.getObjectList('doctors').subscribe((data) => {
       this.doctors = data;
-      console.log('DOCTORS: ', this.doctors); // Log inside the subscription
+      console.log('DOCTORS: ', this.doctors);
     });
   }
   getDoctorFullName(doctorId: string): string {

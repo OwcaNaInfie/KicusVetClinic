@@ -52,7 +52,7 @@ export class AppointmentEditDialogComponent {
     this.appointmentForm = this.fb.group({
       status: [data.status, Validators.required],
       date: [new Date(data.date), Validators.required],
-      time: [data.time, Validators.required],
+      time: [data.timeSlot, Validators.required],
       reason: [data.reason, Validators.required],
       recommendations: [data.recommendations || '', Validators.required],
     });

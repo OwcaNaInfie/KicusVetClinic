@@ -13,7 +13,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select'; // Import MatSelectModule
+import { MatSelectModule } from '@angular/material/select';
 import { Router } from '@angular/router';
 
 @Component({
@@ -29,7 +29,7 @@ import { Router } from '@angular/router';
     MatCardModule,
     MatIconModule,
     MatFormFieldModule,
-    MatSelectModule, // Include MatSelectModule
+    MatSelectModule,
   ],
 })
 export class RegisterComponent {
@@ -55,11 +55,10 @@ export class RegisterComponent {
       ],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      accountType: ['', Validators.required], // Field for account type
-      specialization: [''], // Optional field for doctor specialization
+      accountType: ['', Validators.required],
+      specialization: [''],
     });
 
-    // Listen for account type changes to toggle specialization validation
     this.registerForm.get('accountType')?.valueChanges.subscribe((value) => {
       if (value === 'doctor') {
         this.registerForm
@@ -84,7 +83,6 @@ export class RegisterComponent {
       } = this.registerForm.value;
 
       try {
-        // Create user in Firebase Authentication
         const userCredential = await createUserWithEmailAndPassword(
           this.auth,
           email,
@@ -94,7 +92,6 @@ export class RegisterComponent {
         const userId = userCredential.user?.uid;
         console.log('User created:', userCredential);
 
-        // Save account data based on account type
         if (userId) {
           if (accountType === 'patient') {
             const patientData = {
@@ -122,7 +119,6 @@ export class RegisterComponent {
           }
         }
 
-        // Navigate to the front page
         this.router.navigate(['/front-page']);
       } catch (error) {
         console.error('Error during registration:', error);
