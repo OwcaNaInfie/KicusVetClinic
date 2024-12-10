@@ -8,31 +8,31 @@
 .form-grid {
   display: flex;
   flex-direction: column;
-  gap: 10px; /* Add gap between rows */
+  gap: 10px;
 }
 
 .form-row {
   display: flex;
-  gap: 16px; /* Add gap between form fields in the same row */
+  gap: 16px;
   flex-direction: row;
   justify-content: space-between;
 }
 
 .mat-form-field.full-width {
-  flex: 1 1 100%; /* Takes up full width for a single field */
+  flex: 1 1 100%;
 }
 
 .mat-form-field.half-width {
-  flex: 1 1 calc(50% - 8px); /* Takes up half width for two fields */
+  flex: 1 1 calc(50% - 8px);
 }
 
 mat-form-field {
-  width: 100%; /* Ensures the field takes up the full width of its parent */
+  width: 100%;
   margin-bottom: 20px;
 }
 
 button {
-  width: 100%; /* Makes the button take up the full width */
+  width: 100%;
 }
 
 mat-dialog-actions {
@@ -59,19 +59,18 @@ mat-dialog-content {
   padding: 20px;
 }
 
-/* Responsive layout for smaller screens */
 @media (max-width: 600px) {
   .mat-form-field.half-width {
-    flex: 1 1 100%; /* Full width on small screens for Age and Weight */
+    flex: 1 1 100%;
   }
 
   .mat-form-field.full-width {
-    flex: 1 1 100%; /* Full width for the Notes field */
+    flex: 1 1 100%;
   }
 
   .form-row {
     display: flex;
-    flex-direction: row; /* Stack elements vertically on small screens */
+    flex-direction: row;
     justify-content: space-between;
   }
 }

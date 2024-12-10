@@ -14,11 +14,11 @@ button {
   align-self: center;
 }
 h2 {
-  font-family: "Roboto", sans-serif; /* Dopasowanie fontu do Angular Material */
-  font-size: 24px; /* Dopasowanie wielkości tekstu */
-  font-weight: 500; /* Grubość tekstu, zgodna z Material Design */
-  color: #3f51b5; /* Ten sam kolor co akcent w Angular Material */
+  font-family: "Roboto", sans-serif;
+  font-size: 24px;
+  font-weight: 500;
+  color: #3f51b5;
   text-align: center;
-  margin-bottom: 20px; /* Odstęp od formularza */
-  letter-spacing: 0.5px; /* Lekki rozstrzał liter */
+  margin-bottom: 20px;
+  letter-spacing: 0.5px;
 }

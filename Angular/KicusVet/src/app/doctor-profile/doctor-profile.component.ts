@@ -19,10 +19,11 @@ import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import { FirebaseService } from '../services/firebase.service';
 import { MAT_DATE_FORMATS } from '@angular/material/core';
 import { DateAdapter } from '@angular/material/core';
+import { NavigationBarComponent } from '../navigation-bar/navigation-bar.component';
 
 const MY_DATE_FORMATS = {
   parse: {
-    dateInput: 'DD/MM/YYYY', // Format for parsing input
+    dateInput: 'DD/MM/YYYY',
   },
   display: {
     dateInput: 'DD/MM/YYYY',
@@ -45,6 +46,7 @@ const MY_DATE_FORMATS = {
     MatDialogModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    NavigationBarComponent,
   ],
   standalone: true,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -94,12 +96,10 @@ export class DoctorProfileComponent implements OnInit {
 
     this.http.get<any[]>(`${this.apiUrl}/list/appointments`).subscribe(
       async (appointments: any[]) => {
-        // Filter appointments by doctorId
         this.appointments = appointments.filter(
           (app) => app.doctorId === doctorId
         );
 
-        // For each appointment, fetch the associated animal data
         for (const appointment of this.appointments) {
           const animal = await this.getAnimal(
             appointment.animalId.name,

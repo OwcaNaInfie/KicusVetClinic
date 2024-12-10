@@ -17,6 +17,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { PatientAppointmentsComponent } from '../patient-appointments/patient-appointments.component';
+import { NavigationBarComponent } from '../navigation-bar/navigation-bar.component';
 @Component({
   selector: 'app-appointment',
   templateUrl: './appointment.component.html',
@@ -33,6 +34,7 @@ import { PatientAppointmentsComponent } from '../patient-appointments/patient-ap
     MatSelectModule,
     ReactiveFormsModule,
     PatientAppointmentsComponent,
+    NavigationBarComponent,
   ],
   standalone: true,
 })
