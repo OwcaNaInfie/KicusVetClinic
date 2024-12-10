@@ -1,0 +1,13 @@
+<div class="navbar">
+  <div class="logo">KicusVet</div>
+  <div class="nav-links">
+    <a
+      *ngFor="let route of routes"
+      [routerLink]="route.path"
+      routerLinkActive="active"
+    >
+      {{ route.label }}
+    </a>
+    <button class="logout-button" (click)="logout()">Logout</button>
+  </div>
+</div>

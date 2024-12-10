@@ -17,7 +17,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { AuthGuard } from '../../auth.guard';
-
+import { NavigationBarComponent } from '../../navigation-bar/navigation-bar.component';
 @Component({
   selector: 'app-patient-profile',
   templateUrl: './patient-profile.component.html',
@@ -31,6 +31,7 @@ import { AuthGuard } from '../../auth.guard';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    NavigationBarComponent,
   ],
 })
 export class PatientProfileComponent implements OnInit {

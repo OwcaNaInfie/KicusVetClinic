@@ -1,7 +1,6 @@
 <div class="appointments-container">
   <h3 class="appointment-header">Your Appointments</h3>
 
-  <!-- Upcoming Appointments -->
   <mat-card
     class="appointment-card"
     *ngIf="upcomingAppointments.length; else noUpcoming"
@@ -30,7 +29,6 @@
     <p class="empty-state">No upcoming appointments.</p>
   </ng-template>
 
-  <!-- Past Appointments -->
   <mat-card
     class="appointment-card"
     *ngIf="pastAppointments.length; else noPast"

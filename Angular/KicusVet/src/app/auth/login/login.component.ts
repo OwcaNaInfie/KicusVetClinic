@@ -12,7 +12,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { Router } from '@angular/router'; // Import Router
+import { Router, RouterModule } from '@angular/router';
 import { AuthGuard } from '../../auth.guard';
 import { FirebaseService } from '../../services/firebase.service';
 
@@ -29,6 +29,7 @@ import { FirebaseService } from '../../services/firebase.service';
     MatCardModule,
     MatIconModule,
     MatFormFieldModule,
+    RouterModule,
   ],
 })
 export class LoginComponent {

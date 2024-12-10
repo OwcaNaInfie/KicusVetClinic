@@ -15,6 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { Router } from '@angular/router';
+import { FirebaseService } from '../../services/firebase.service';
 
 @Component({
   selector: 'app-register',
@@ -45,7 +46,8 @@ export class RegisterComponent {
     private fb: FormBuilder,
     private auth: Auth,
     private db: Database,
-    private router: Router
+    private router: Router,
+    private firebaseService: FirebaseService
   ) {
     this.registerForm = this.fb.group({
       fullName: ['', Validators.required],
@@ -119,7 +121,14 @@ export class RegisterComponent {
           }
         }
 
-        this.router.navigate(['/front-page']);
+        const isDoctor = await this.firebaseService.getDoctorDataByUID(
+          userId || ''
+        );
+        if (isDoctor) {
+          this.router.navigate(['/doctor']);
+        } else {
+          this.router.navigate(['/profile']);
+        }
       } catch (error) {
         console.error('Error during registration:', error);
       }

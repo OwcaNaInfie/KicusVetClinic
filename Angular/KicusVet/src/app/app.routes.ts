@@ -4,7 +4,7 @@ import { AuthGuard } from './auth.guard';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: '/login', // Redirect to login if the user is not authenticated
+    redirectTo: '/login',
     pathMatch: 'full',
   },
   {
@@ -25,7 +25,7 @@ export const routes: Routes = [
       import('./front-page/front-page.component').then(
         (m) => m.FrontPageComponent
       ),
-    canActivate: [AuthGuard], // Protect the front page with AuthGuard
+    canActivate: [AuthGuard],
   },
   {
     path: 'crud-test',
@@ -55,7 +55,4 @@ export const routes: Routes = [
         (m) => m.DoctorProfileComponent
       ),
   },
-
-  // This default path should be removed to avoid conflict
-  // { path: '', redirectTo: '/front-page', pathMatch: 'full' },
 ];
