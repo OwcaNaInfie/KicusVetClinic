@@ -1,0 +1,32 @@
+$primary: #F7924A;
+$heading-color: #464646;
+$heading-color-minor: #1A1A1A;
+$text-color:#292941;
+$text-color-secondary: #808080;
+$text-shadow: #A7A7A7;
+
+$succes:#52B05D;
+$error:#B3261E;
+$white: #ffffff;
+
+$spacing-s: 0.5rem;
+$spacing: 1rem;
+$spacing-l: 2rem;
+
+$field-border-radius: 8px;
+
+@mixin primary-button {
+	background-color: $primary;
+	color: $white;
+	font-weight: 500;
+	height: 40px;
+	border-radius: $field-border-radius;
+	margin-block: $spacing;
+	&:hover {
+		opacity: 0.9;
+	}
+}
+
+@mixin box-shadow {
+	box-shadow: 5px 5px 25px rgba(0, 0, 0, 0.5);
+}

@@ -21,7 +21,7 @@ import { AuthGuard } from '../../auth.guard';
 @Component({
   selector: 'app-patient-profile',
   templateUrl: './patient-profile.component.html',
-  styleUrls: ['./patient-profile.component.css'],
+  styleUrls: ['./patient-profile.component.scss'],
   standalone: true,
   schemas: [NO_ERRORS_SCHEMA],
   imports: [

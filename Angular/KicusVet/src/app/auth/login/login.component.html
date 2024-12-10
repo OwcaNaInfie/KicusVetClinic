@@ -1,30 +1,36 @@
-<mat-card class="login-card">
-  <h2>Login</h2>
-  <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
-    <mat-form-field appearance="fill">
-      <mat-label>Email</mat-label>
-      <input matInput formControlName="email" type="email" />
-      <mat-error *ngIf="loginForm.get('email')?.hasError('required')">
-        Email is required.
-      </mat-error>
-    </mat-form-field>
-
-    <mat-form-field appearance="fill">
-      <mat-label>Password</mat-label>
-      <input matInput formControlName="password" type="password" />
-      <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
-        Password is required.
-      </mat-error>
-    </mat-form-field>
-
-    <button
-      mat-raised-button
-      color="primary"
-      type="submit"
-      [disabled]="loginForm.invalid"
-    >
-      Login
-    </button>
-  </form>
-  <p>Don't have an account? <a routerLink="/register">Register here</a></p>
-</mat-card>
+<div class="login-card container">
+  <div class="login-card-image">
+    <img src="kicus-vet.png" alt="Happy man petting the dog"> 
+  </div>
+  <div class="login-content">
+    <h2>Login into your account</h2>
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+      <mat-form-field appearance="fill">
+        <mat-label class="kicus-label">Email:</mat-label>
+        <input class="kicus-input"matInput formControlName="email" type="email" placeholder="Enter your email..." />
+        <mat-error *ngIf="loginForm.get('email')?.hasError('required')">
+          Email is required!
+        </mat-error>
+      </mat-form-field>
+  
+      <mat-form-field appearance="fill">
+        <mat-label class="kicus-label">Password:</mat-label>
+        <input class="kicus-input"matInput formControlName="password" type="password" placeholder="xxxxxxxxx" />
+        <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
+          Password is required!
+        </mat-error>
+      </mat-form-field>
+  
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        class="kicus-primary-button"
+        [disabled]="loginForm.invalid"
+      >
+        Login
+      </button>
+      <p class="register-link">Don't have an account? <a routerLink="/register"><strong>Sign In</strong></a></p>
+    </form>
+  </div>
+</div>

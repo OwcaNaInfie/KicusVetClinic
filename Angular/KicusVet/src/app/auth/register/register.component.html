@@ -1,29 +1,29 @@
-<mat-card>
-  <h2>Register</h2>
+<div class="container">
+  <h2>Register a new  account</h2>
   <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
-    <mat-form-field appearance="outline">
-      <mat-label>Full Name</mat-label>
-      <input matInput type="text" formControlName="fullName" />
+    <mat-form-field appearance="fill">
+      <mat-label class="kicus-label">Full Name</mat-label>
+      <input class="kicus-input" matInput type="text" formControlName="fullName" />
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Phone Number</mat-label>
-      <input matInput type="text" formControlName="phoneNumber" />
+    <mat-form-field appearance="fill">
+      <mat-label class="kicus-label">Phone Number</mat-label>
+      <input class="kicus-input" matInput type="text" formControlName="phoneNumber" />
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Email</mat-label>
-      <input matInput type="email" formControlName="email" />
+    <mat-form-field appearance="fill">
+      <mat-label class="kicus-label">Email</mat-label>
+      <input class="kicus-input" matInput type="email" formControlName="email" />
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Password</mat-label>
-      <input matInput type="password" formControlName="password" />
+    <mat-form-field appearance="fill">
+      <mat-label class="kicus-label">Password</mat-label>
+      <input class="kicus-input" matInput type="password" formControlName="password" />
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Account Type</mat-label>
-      <mat-select formControlName="accountType">
+    <mat-form-field appearance="fill">
+      <mat-label class="kicus-label">Account Type</mat-label>
+      <mat-select class="kicus-input" formControlName="accountType">
         <mat-option value="patient">Patient</mat-option>
         <mat-option value="doctor">Doctor</mat-option>
       </mat-select>
@@ -32,10 +32,10 @@
     <!-- Specialization Field (Visible Only for Doctors) -->
     <mat-form-field
       *ngIf="registerForm.get('accountType')?.value === 'doctor'"
-      appearance="outline"
+      appearance="fill"
     >
-      <mat-label>Select Specialization</mat-label>
-      <mat-select formControlName="specialization">
+      <mat-label class="kicus-label">Select Specialization</mat-label>
+      <mat-select class="kicus-input" formControlName="specialization">
         <mat-option *ngFor="let spec of specializations" [value]="spec">
           {{ spec }}
         </mat-option>
@@ -43,6 +43,7 @@
     </mat-form-field>
 
     <button
+      class="kicus-primary-button"
       mat-raised-button
       color="primary"
       type="submit"
@@ -51,4 +52,4 @@
       Register
     </button>
   </form>
-</mat-card>
+</div>

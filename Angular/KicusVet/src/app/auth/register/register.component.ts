@@ -20,7 +20,7 @@ import { Router } from '@angular/router';
   selector: 'app-register',
   standalone: true,
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css'],
+  styleUrls: ['./register.component.scss'],
   imports: [
     ReactiveFormsModule,
     CommonModule,

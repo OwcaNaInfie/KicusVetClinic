@@ -1,0 +1,42 @@
+@import '../../../styles/variables.scss';
+
+.login-card.container{
+  background-color: $primary;
+	border-radius: 2rem;
+  flex-direction: column;
+  align-items: flex-end;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0;
+
+  
+  .login-content {
+    background-color: $white;
+    border-radius: 21rem 21rem 0 0;
+    padding-inline: $spacing-l;
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: -25px;
+    flex-grow: 2;
+    width: 170%;
+
+    .login-card-image {
+      flex-grow: 1;
+    }
+  }
+
+  .register-link {
+    text-align: center;
+    padding-top: $spacing;
+    padding-bottom: $spacing-l;
+  }
+
+  img {
+    height: auto;
+    width: 100%;
+  }
+}

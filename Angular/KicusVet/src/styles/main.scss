@@ -1,0 +1,149 @@
+@import "./fonts.scss";
+@import "./variables.scss";
+@import "../app/auth/login/login.component.scss";
+
+* {
+	font-family: "poppins", sans-serif;
+	font-size: 14px;
+	box-sizing: border-box;
+}
+
+body {
+	background-color: $white;
+	color: $text-color;
+}
+
+h2 {
+	font-weight: 700;
+	font-size: 1.75rem;
+	color: $heading-color;
+	max-width: 190px;
+	text-align: center;
+	line-height: 1.5;
+}
+
+h4 {
+	font-size: 1rem;
+	font-weight: 500;
+	color: $heading-color-minor;
+	width: 100%;
+}
+
+h5 {
+	font-size: 1rem;
+	font-weight: 400;
+	color: $heading-color-minor;
+	width: 100%;
+}
+
+strong {
+	font-weight: 600;
+}
+
+.container {
+	max-width: 414px;
+	min-height: 50rem;
+	border-radius: 2rem;
+	margin-inline: auto;
+	margin-block: 2rem;
+  flex-direction: column;
+  align-items: flex-end;
+  display: flex;
+  align-items: center;
+  padding: $spacing;
+	@include box-shadow;
+}
+
+form {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	max-width: 290px;
+
+	button.kicus-primary-button.mdc-button {
+    @include primary-button;
+  }
+
+	.mdc-text-field .mdc-floating-label {
+		top: 0;
+		transform: none;
+		padding-bottom: 5px;
+	}
+
+	.mat-mdc-form-field {
+		&-infix {
+			display: flex;
+			flex-direction: column;
+			max-width: 334px;
+			height: 120px;
+
+			.mdc-floating-label {
+				position: relative;
+			}
+		}
+
+		&-required-marker {
+			display: none;
+		}
+
+		&-error-wrapper {
+			color: $error;
+			padding: 0;
+			margin-top: -5px;
+		}
+
+		.mat-mdc-text-field-wrapper.mdc-text-field {
+			padding: 0;
+			height: 70px;
+	
+			.mdc-line-ripple {
+				display: none;
+			}
+	
+			.mat-mdc-input-element,
+			.mat-mdc-select{
+				&.kicus-input {
+					border: 1px solid $primary;
+					padding: $spacing;
+					height: 45px;
+					border-radius: $field-border-radius;
+					box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+		
+					&::placeholder {
+						color: $text-shadow;
+						font-family: "Roboto", sans-serif;
+						font-weight: 500;
+					}
+					&.ng-valid {
+						border: 1px solid $succes;	
+					}
+					.mat-mdc-select-arrow-wrapper {
+						height: 14px;
+						transform: none;
+					}
+				}
+			}
+	
+			&--invalid {
+				.mat-mdc-input-element.kicus-input{
+					border: 2px solid $error;
+	
+					&::placeholder {
+						color: $error;
+						font-weight: 600;
+					}
+				}
+			}
+		}
+
+		.kicus-label, label {
+			display: block;
+			font-weight: 500;
+		}
+	}
+}
+
+.cdk-overlay-pane{
+margin-inline: auto;
+margin-top: -$spacing-l;
+}

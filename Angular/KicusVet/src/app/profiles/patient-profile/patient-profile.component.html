@@ -1,12 +1,12 @@
-<div class="patient-container">
+<div class="patient-container container">
   <mat-card class="patient-card">
-    <h2>Patient Profile</h2>
+    <h4>Profile</h4>
     <form
       [formGroup]="patientForm"
       (ngSubmit)="updatePatientData()"
       class="form-container"
     >
-      <mat-grid-list cols="2" rowHeight="100px" gutterSize="16px">
+      <mat-grid-list class="personal-details" cols="2" rowHeight="100px" gutterSize="16px">
         <mat-grid-tile
           *ngFor="let control of patientForm.controls | keyvalue"
           [colspan]="1"
@@ -26,7 +26,43 @@
           gap: 20px;
         "
       >
-        <button
+
+        <!-- <button mat-raised-button color="primary" type="submit">
+          Update Info
+        </button> -->
+      </div>
+    </form>
+  </mat-card>
+
+  <h5 class="animals-header">Your pets</h5>
+  
+  <div class="animals-container">
+    <button class="animal-card" mat-raised-button color="accent" (click)="openAnimalDialog()">
+      <div class="add-icon">+</div>
+      <mat-card-header>
+        <mat-card-title class="animal-name">Add Pet</mat-card-title>
+      </mat-card-header>
+    </button>
+    <mat-card
+      *ngFor="let animal of animals"
+      class="animal-card"
+      (click)="openAnimalEditDialog(animal)"
+    >
+      <img src="hamster.png" alt="Animowany chomik trzymający pestkę" />
+      <mat-card-header>
+        <mat-card-title class="animal-name">{{ animal.name }}</mat-card-title>
+        <!-- <mat-card-subtitle>
+          {{ animal.species }} - {{ animal.breed }}
+        </mat-card-subtitle> -->
+      </mat-card-header>
+      <!-- <mat-card-content>
+        <p>Age: {{ animal.age }} years</p>
+        <p>Weight: {{ animal.weight }} kg</p>
+        <p>Notes: {{ animal.notes }}</p>
+      </mat-card-content> -->
+    </mat-card>
+    <button
+          class="kicus-primary-button"
           mat-raised-button
           color="primary"
           type="button"
@@ -34,36 +70,5 @@
         >
           Schedule an Appointment
         </button>
-
-        <button mat-raised-button color="primary" type="submit">
-          Edit Info
-        </button>
-      </div>
-    </form>
-  </mat-card>
-
-  <h3 class="animals-header">My Animals</h3>
-  <button mat-raised-button color="accent" (click)="openAnimalDialog()">
-    Add New Animal
-  </button>
-
-  <div class="animals-container">
-    <mat-card
-      *ngFor="let animal of animals"
-      class="animal-card"
-      (click)="openAnimalEditDialog(animal)"
-    >
-      <mat-card-header>
-        <mat-card-title>{{ animal.name }}</mat-card-title>
-        <mat-card-subtitle>
-          {{ animal.species }} - {{ animal.breed }}
-        </mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <p>Age: {{ animal.age }} years</p>
-        <p>Weight: {{ animal.weight }} kg</p>
-        <p>Notes: {{ animal.notes }}</p>
-      </mat-card-content>
-    </mat-card>
   </div>
 </div>

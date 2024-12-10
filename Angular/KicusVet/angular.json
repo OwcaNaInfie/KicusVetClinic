@@ -5,7 +5,11 @@
   "projects": {
     "KicusVet": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
@@ -25,8 +29,7 @@
               }
             ],
             "styles": [
-              "src/styles.css",
-              "node_modules/@angular/material/prebuilt-themes/indigo-pink.css"
+              "src/styles/main.scss"
             ],
             "scripts": []
           },
@@ -80,11 +83,14 @@
                 "input": "public"
               }
             ],
-            "styles": ["src/styles.css"],
+            "styles": [".scss"],
             "scripts": []
           }
         }
       }
     }
+  },
+  "cli": {
+    "analytics": "d59997ee-192c-4249-bf04-ce62424ae58f"
   }
 }
