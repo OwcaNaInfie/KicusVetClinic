@@ -15,9 +15,22 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { AuthGuard } from '../auth.guard';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
+import { MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 import { FirebaseService } from '../services/firebase.service';
+import { MAT_DATE_FORMATS } from '@angular/material/core';
+import { DateAdapter } from '@angular/material/core';
 
+const MY_DATE_FORMATS = {
+  parse: {
+    dateInput: 'DD/MM/YYYY', // Format for parsing input
+  },
+  display: {
+    dateInput: 'DD/MM/YYYY',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
 @Component({
   selector: 'app-doctor-profile',
   templateUrl: './doctor-profile.component.html',
@@ -35,6 +48,10 @@ import { FirebaseService } from '../services/firebase.service';
   ],
   standalone: true,
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  providers: [
+    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS },
+    { provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
+  ],
 })
 export class DoctorProfileComponent implements OnInit {
   doctorForm: FormGroup;
@@ -47,7 +64,8 @@ export class DoctorProfileComponent implements OnInit {
     private http: HttpClient,
     private dialog: MatDialog,
     private guard: AuthGuard,
-    private firebaseService: FirebaseService
+    private firebaseService: FirebaseService,
+    private dateAdapter: DateAdapter<Date>
   ) {
     this.doctorForm = this.fb.group({
       fullName: ['', Validators.required],
@@ -55,6 +73,7 @@ export class DoctorProfileComponent implements OnInit {
       phoneNumber: ['', Validators.required],
       specialization: ['', Validators.required],
     });
+    this.dateAdapter.setLocale('en-GB');
   }
 
   async ngOnInit() {
@@ -74,11 +93,26 @@ export class DoctorProfileComponent implements OnInit {
     );
 
     this.http.get<any[]>(`${this.apiUrl}/list/appointments`).subscribe(
-      (appointments: any[]) => {
+      async (appointments: any[]) => {
+        // Filter appointments by doctorId
         this.appointments = appointments.filter(
           (app) => app.doctorId === doctorId
         );
+
+        // For each appointment, fetch the associated animal data
+        for (const appointment of this.appointments) {
+          const animal = await this.getAnimal(
+            appointment.animalId.name,
+            appointment.patientId
+          );
+          appointment.animal = animal;
+        }
+
         this.filteredAppointments = [...this.appointments];
+        console.log(
+          'Appointments with Animal Data:',
+          this.filteredAppointments
+        );
       },
       (error) => console.error('Error fetching appointments:', error)
     );
@@ -96,6 +130,7 @@ export class DoctorProfileComponent implements OnInit {
           .subscribe(
             () => {
               console.log('Doctor data updated successfully');
+              alert('Doctor data updated successfully!');
             },
             (error) => console.error('Error updating doctor data:', error)
           );
@@ -112,7 +147,17 @@ export class DoctorProfileComponent implements OnInit {
         )
       : [...this.appointments];
   }
-
+  async getAnimal(animalId: string, patientId: string) {
+    const patientData = await this.firebaseService.getPatientDataByUID(
+      patientId
+    );
+    if (!patientData) {
+      console.error('Patient data not found');
+      return 'Unknown Animal';
+    }
+    const animal = patientData.animals.find((a: any) => a.name === animalId);
+    return animal;
+  }
   async openAppointmentDialog(appointment: any) {
     try {
       const patientData = await this.firebaseService.getPatientDataByUID(

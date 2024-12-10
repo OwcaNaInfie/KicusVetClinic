@@ -123,11 +123,6 @@ app.delete(
       const patient = snapshot.val();
       console.log("Patient data:", patient);
 
-      // Log animals array to inspect its structure
-      // console.log("Animals array:", patient.animals);
-
-      // Convert animalId to a string to match the id format in the array
-
       patient.animals.splice(animalId, 1);
       await db
         .ref(`patients/${patientId}`)

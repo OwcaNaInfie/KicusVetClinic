@@ -42,13 +42,32 @@
     >
       <mat-card-header>
         <mat-card-title>{{ appointment.patientName }}</mat-card-title>
-        <mat-card-subtitle
-          >{{ appointment.date | date : "short" }} -
-          {{ appointment.status }}</mat-card-subtitle
-        >
+        <mat-card-subtitle>
+          {{ appointment.date | date : "dd/MM/YYYY" }} -
+          {{ appointment.timeSlot }} - {{ appointment.status }}
+        </mat-card-subtitle>
       </mat-card-header>
+
       <mat-card-content>
-        <p>Reason: {{ appointment.reason }}</p>
+        <p>
+          <strong>Animal:</strong>
+          {{ appointment.animal ? appointment.animal.name : "Unknown Animal" }}
+        </p>
+
+        <div *ngIf="appointment.animal" class="animal-info">
+          <mat-chip-list>
+            <mat-chip color="primary" selected>
+              <strong>Weight:</strong> {{ appointment.animal.weight }} kg
+            </mat-chip>
+            <mat-chip color="accent" selected>
+              <strong>Age:</strong> {{ appointment.animal.age }} years
+            </mat-chip>
+            <mat-chip color="warn" selected>
+              <strong>Breed:</strong> {{ appointment.animal.breed }}
+            </mat-chip>
+            <p>Reason: {{ appointment.reason }}</p>
+          </mat-chip-list>
+        </div>
       </mat-card-content>
     </mat-card>
   </div>

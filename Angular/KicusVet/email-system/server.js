@@ -1,11 +1,9 @@
-// server.js
 const express = require("express");
 const nodemailer = require("nodemailer");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const dotenv = require("dotenv");
 
-// Load environment variables
 dotenv.config();
 
 const app = express();
@@ -14,7 +12,6 @@ const port = process.env.PORT || 2137;
 app.use(cors());
 app.use(bodyParser.json());
 
-// Nodemailer transporter configuration
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -23,7 +20,6 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-// Send email endpoint (for appointment updates)
 app.post("/send-update-email", (req, res) => {
   const { email, appointmentDate, doctorName, status, reason } = req.body;
 

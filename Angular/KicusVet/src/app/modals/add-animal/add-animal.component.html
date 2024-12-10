@@ -2,9 +2,7 @@
 <mat-dialog-content>
   <mat-card class="animal-form-card">
     <form [formGroup]="animalForm" (ngSubmit)="onSubmit()">
-      <!-- Flexbox container for the form rows -->
       <div class="form-grid">
-        <!-- Row 1: Animal Name -->
         <div class="form-row">
           <mat-form-field appearance="fill" class="full-width">
             <mat-label>Animal Name</mat-label>
@@ -12,7 +10,6 @@
           </mat-form-field>
         </div>
 
-        <!-- Row 2: Age, Weight -->
         <div class="form-row">
           <mat-form-field appearance="fill" class="half-width">
             <mat-label>Age</mat-label>
@@ -24,7 +21,6 @@
           </mat-form-field>
         </div>
 
-        <!-- Row 3: Breed, Species -->
         <div class="form-row">
           <mat-form-field appearance="fill" class="half-width">
             <mat-label>Breed</mat-label>
@@ -36,7 +32,6 @@
           </mat-form-field>
         </div>
 
-        <!-- Row 4: Notes -->
         <div class="form-row">
           <mat-form-field appearance="fill" class="full-width">
             <mat-label>Notes</mat-label>

@@ -3,7 +3,6 @@
   <mat-card class="animal-form-card">
     <form [formGroup]="animalForm" (ngSubmit)="saveChanges()">
       <div class="form-grid">
-        <!-- Row 1: Name -->
         <div class="form-row">
           <mat-form-field
             appearance="fill"
@@ -15,7 +14,6 @@
           </mat-form-field>
         </div>
 
-        <!-- Row 2: Age and Weight -->
         <div class="form-row">
           <mat-form-field appearance="fill" class="half-width">
             <mat-label>Age</mat-label>
@@ -27,7 +25,6 @@
           </mat-form-field>
         </div>
 
-        <!-- Row 3: Breed and Species -->
         <div class="form-row">
           <mat-form-field appearance="fill" class="half-width">
             <mat-label>Breed</mat-label>
@@ -39,7 +36,6 @@
           </mat-form-field>
         </div>
 
-        <!-- Row 4: Notes -->
         <div class="form-row">
           <mat-form-field
             appearance="fill"
@@ -70,17 +66,14 @@
       </mat-list>
 
       <div class="button-container">
-        <!-- Cancel button (close dialog) -->
         <button mat-button (click)="closeDialog()" style="width: 50%">
           Cancel
         </button>
 
-        <!-- Delete button (prevent form submission) -->
         <button mat-button color="warn" type="button" (click)="confirmDelete()">
           Delete
         </button>
 
-        <!-- Save button (form submission) -->
         <button
           mat-raised-button
           color="primary"

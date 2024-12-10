@@ -152,6 +152,7 @@ export class AppointmentComponent implements OnInit {
     if (this.appointmentForm.valid) {
       const uid = await this.authGuard.getCurrentUserUID();
       const { doctorId, date, timeSlot } = this.appointmentForm.value;
+      date.setDate(date.getDate() + 1);
 
       const appointment = {
         ...this.appointmentForm.value,
